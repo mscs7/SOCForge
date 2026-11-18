@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="SOCForge is a local-first SOC alert triage and incident response automation lab.">
+  <title>SOCForge · Analyst Workspace</title>
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="/" aria-label="SOCForge home"><span class="brand-logo">S<span class="brand-dot"></span></span><span><strong>SOCForge</strong><small>Security operations lab</small></span></a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav id="navigation">
+        <button class="nav-link active" data-view="overview" type="button"><span class="nav-icon">◫</span> Overview</button>
+        <button class="nav-link" data-view="incidents" type="button"><span class="nav-icon">☷</span> Incident queue <span id="nav-queue" class="nav-count">0</span></button>
+        <button class="nav-link" data-view="automation" type="button"><span class="nav-icon">⇢</span> Automation</button>
+        <button class="nav-link" data-view="about" type="button"><span class="nav-icon">◎</span> Lab guide</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="lab-panel"><div class="lab-badge"><span class="live-dot"></span> LOCAL LAB</div><div class="lab-head">Safe by design</div><p>Containment actions are simulated. No endpoint commands are ever executed.</p></div>
+        <div class="sidebar-foot">SOCForge v1.0 <span>·</span> Portfolio project</div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar"><div class="breadcrumb">SOC OPERATIONS <span>/</span> <strong id="top-view">Overview</strong></div><div class="top-right"><span id="connection" class="status-pill"><span class="live-dot"></span> Connecting</span><span class="top-avatar">SOC</span></div></header>
+      <div class="main-inner">
+        <section class="hero">
+          <div><div class="eyebrow">SECURITY OPERATIONS · ANALYST WORKSPACE</div><h1 id="page-title">See the signal.<br><span>Investigate with context.</span></h1><p id="page-subtitle">From raw security alerts to prioritised incidents, investigation trails and approval-only response simulations.</p></div>
+          <div class="hero-buttons"><button class="btn btn-primary" type="button" id="load-demo"><span>＋</span> Load demo scenarios</button><button class="btn btn-ghost" type="button" id="refresh-data">↻ Refresh</button></div>
+        </section>
+        <div class="environment-strip"><span class="strip-icon">✳</span> <strong>Synthetic-by-default</strong> <span>·</span> No external threat intelligence lookups <span>·</span> No real containment <span id="sync-time" class="sync-time">Not synchronised</span></div>
+        <section class="metrics" aria-label="Key metrics">
+          <div class="metric-card"><span class="metric-label">OPEN INCIDENTS</span><div class="metric-value" id="metric-open">—</div><span class="metric-foot"><i class="metric-square green"></i> Active investigation queue</span></div>
+          <div class="metric-card"><span class="metric-label">HIGH / CRITICAL</span><div class="metric-value" id="metric-urgent">—</div><span class="metric-foot"><i class="metric-square red"></i> Needs prioritised triage</span></div>
+          <div class="metric-card"><span class="metric-label">TOTAL ALERTS</span><div class="metric-value" id="metric-alerts">—</div><span class="metric-foot"><i class="metric-square blue"></i> Ingested and deduplicated</span></div>
+          <div class="metric-card"><span class="metric-label">AWAITING REVIEW</span><div class="metric-value" id="metric-new">—</div><span class="metric-foot"><i class="metric-square amber"></i> New, unassigned cases</span></div>
+        </section>
+        <section class="view" id="view-overview">
+          <div class="dashboard-grid">
+            <div class="panel"><div class="panel-head"><div><span class="section-kicker">INTAKE ANALYTICS</span><h2>Alert activity</h2></div><span class="chip">Last 7 days</span></div><div id="activity-chart" class="activity-chart" aria-label="Seven day alert activity chart"></div><p class="chart-note">Events are grouped by ingestion date (UTC).</p></div>
+            <div class="panel operations-panel"><div class="panel-head"><div><span class="section-kicker">SYSTEM HEALTH</span><h2>Automation status</h2></div><span class="health-badge">● Lab mode</span></div><div class="ops-row"><span class="ops-symbol">↧</span><span><strong>Alert ingestion</strong><small>Wazuh and generic JSON</small></span><b class="ops-on">READY</b></div><div class="ops-row"><span class="ops-symbol">≋</span><span><strong>Correlation engine</strong><small>Host / incident family grouping</small></span><b class="ops-on">ACTIVE</b></div><div class="ops-row"><span class="ops-symbol">◇</span><span><strong>n8n delivery</strong><small>Opt-in webhook integration</small></span><b id="n8n-status" class="ops-off">OFF</b></div><div class="ops-row"><span class="ops-symbol">✓</span><span><strong>Response guardrail</strong><small>Approval-only simulation</small></span><b class="ops-on">SAFE</b></div></div>
+          </div>
+          <div class="panel"><div class="panel-head"><div><span class="section-kicker">PRIORITY WORKLOAD</span><h2>Incident queue</h2></div><button type="button" class="text-button" data-switch="incidents">View all cases →</button></div><div id="overview-incidents" class="incident-table-wrap"></div></div>
+        </section>
+        <section class="view" id="view-incidents" hidden>
+          <div class="panel"><div class="panel-head"><div><span class="section-kicker">CASE MANAGEMENT</span><h2>All incidents</h2></div><span id="case-count" class="chip">0 cases</span></div><div class="filters"><label class="search-field"><span aria-hidden="true">⌕</span><input id="search-input" placeholder="Search host, case or title" aria-label="Search incidents"></label><label class="filter-wrap">Severity<select id="severity-filter"><option value="">All severities</option><option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label><label class="filter-wrap">Status<select id="status-filter"><option value="">All statuses</option><option value="new">New</option><option value="investigating">Investigating</option><option value="contained">Contained</option><option value="resolved">Resolved</option><option value="false_positive">False positive</option></select></label></div><div id="all-incidents" class="incident-table-wrap"></div></div>
+        </section>
+        <section class="view" id="view-automation" hidden>
+          <div class="panel"><div class="panel-head"><div><span class="section-kicker">WORKFLOW ORCHESTRATION</span><h2>Notification delivery</h2></div><span class="chip">Optional integration</span></div><p class="lede">Once an n8n production webhook is configured, new or escalated incidents trigger a JSON notification. Notifications never trigger real containment commands.</p><div class="automation-empty" id="automation-logs">No automation deliveries recorded. The n8n webhook is disabled until you configure it.</div></div>
+          <div class="panel secondary-panel"><h2>Enable n8n delivery</h2><p>Import <code>integrations/n8n_socforge_workflow.json</code> in n8n, publish it and set <code>SOCFORGE_N8N_WEBHOOK_URL</code> in your environment. No credentials or outbound calls are required for the demo.</p></div>
+        </section>
+        <section class="view" id="view-about" hidden>
+          <div class="panel"><div class="panel-head"><div><span class="section-kicker">REFERENCE ARCHITECTURE</span><h2>How SOCForge works</h2></div><span class="chip">v1.0</span></div><div class="flow-diagram"><div>Wazuh / JSON alerts</div><span>→</span><div>Normalize & dedupe</div><span>→</span><div>Correlate & score</div><span>→</span><div>Incident queue</div><span>→</span><div>n8n (opt-in)</div></div><p class="lede">SOCForge is a functional local SOC portfolio lab. It provides deterministic risk scoring and MITRE ATT&CK reference hypotheses. It is not a threat intelligence service, production SIEM, forensic product or real SOAR containment system.</p><div class="guide-grid"><div><h3>1 · Load samples</h3><p>Click “Load demo scenarios” to generate a three-incident investigation queue.</p></div><div><h3>2 · Investigate</h3><p>Open a case to review its evidence, risk factors, IOCs and ATT&CK mappings.</p></div><div><h3>3 · Record findings</h3><p>Assign an analyst, change status, add notes and download a Markdown case report.</p></div><div><h3>4 · Simulate approval</h3><p>Request and approve containment simulation. No system-level actions are executed.</p></div></div></div>
+          <div class="panel secondary-panel"><h2>Demo data controls</h2><p>Remove only events marked as demo. Real integration alerts (if any) are preserved.</p><button type="button" class="btn btn-danger-outline" id="reset-demo">Reset demo data</button></div>
+        </section>
+        <footer class="footer">SOCForge · Local lab for detection engineering and incident triage <span>·</span> Built for transparent, reproducible demonstrations</footer>
+      </div>
+    </main>
+  </div>
+  <div id="overlay" class="overlay" hidden></div>
+  <aside id="incident-drawer" class="drawer" role="dialog" aria-modal="true" aria-label="Incident details" hidden>
+    <div class="drawer-top"><div><div class="section-kicker">INCIDENT INVESTIGATION</div><h2 id="drawer-id">INC-0000</h2></div><button id="close-drawer" type="button" class="close-button" aria-label="Close incident details">×</button></div>
+    <div class="drawer-scroll"><div id="drawer-message" class="drawer-message"></div><div class="drawer-summary"><h3 id="drawer-title"></h3><div class="drawer-tags"><span id="drawer-severity"></span><span id="drawer-status"></span><span id="drawer-score"></span></div><div id="drawer-host" class="muted"></div></div>
+      <div class="drawer-section"><h4>Risk factors <span>EXPLAINABLE SCORE</span></h4><ul id="drawer-reasons" class="bullets"></ul></div>
+      <div class="drawer-section"><h4>Evidence timeline <span id="evidence-count"></span></h4><div id="drawer-timeline" class="timeline"></div></div>
+      <div class="drawer-section"><h4>Indicators & ATT&CK references</h4><div id="drawer-indicators" class="indicator-list"></div><div id="drawer-techniques" class="techniques"></div><small class="muted">IP address context is not a threat reputation verdict. ATT&CK mappings are investigation hypotheses.</small></div>
+      <div class="drawer-section"><h4>Analyst checklist</h4><ol id="drawer-playbook" class="playbook"></ol></div>
+      <div class="drawer-section"><h4>Case management</h4><label class="drawer-label">Case status<select id="drawer-status-input"><option value="new">New</option><option value="investigating">Investigating</option><option value="contained">Contained</option><option value="resolved">Resolved</option><option value="false_positive">False positive</option></select></label><label class="drawer-label">Assigned analyst<input id="drawer-analyst" maxlength="80" placeholder="Unassigned"></label><button class="btn btn-primary" id="save-triage" type="button">Save case changes</button></div>
+      <div class="drawer-section"><h4>Investigation notes</h4><div id="drawer-notes" class="notes"></div><label class="drawer-label">Add a note<textarea id="drawer-note-input" rows="3" maxlength="4000" placeholder="Record validation, evidence or next steps…"></textarea></label><button id="add-note" type="button" class="btn btn-subtle">Add note</button></div>
+      <div class="drawer-section"><h4>Safe response simulation</h4><p class="muted">This workflow logs approvals only. It never isolates endpoints, blocks IPs or modifies accounts.</p><div class="action-row"><button id="request-containment" class="btn btn-subtle" type="button">Request simulation</button><button id="approve-containment" class="btn btn-danger-outline" type="button">Approve simulation</button></div><p id="simulation-state" class="mini-note"></p></div>
+      <div class="drawer-section"><h4>Audit history</h4><div id="drawer-audit" class="audit"></div></div>
+    </div><div class="drawer-footer"><a id="download-report" class="btn btn-ghost" href="#">↓ Download case report (.md)</a></div>
+  </aside>
+  <div id="toast" role="status" class="toast" aria-live="polite"></div>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>

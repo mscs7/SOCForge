@@ -1,0 +1,13 @@
+<!-- Example only: merge the <integration> block into the Wazuh manager's
+     existing <ossec_config> section, do not replace the full file. -->
+<ossec_config>
+  <integration>
+    <name>custom-socforge</name>
+    <!-- Use the reachable SOCForge server address; 127.0.0.1 is only valid if
+         the SOCForge service runs on the Wazuh manager itself. -->
+    <hook_url>http://REPLACE-WITH-SOCFORGE-HOST:8080/api/alerts</hook_url>
+    <api_key>REPLACE_WITH_LONG_RANDOM_SOCFORGE_API_KEY</api_key>
+    <level>5</level>
+    <alert_format>json</alert_format>
+  </integration>
+</ossec_config>

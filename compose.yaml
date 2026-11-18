@@ -1,0 +1,14 @@
+services:
+  socforge:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080" # Intentionally not internet-exposed
+    environment:
+      SOCFORGE_DB: /data/socforge.db
+      SOCFORGE_API_KEY: ${SOCFORGE_API_KEY:-}
+      SOCFORGE_N8N_WEBHOOK_URL: ${SOCFORGE_N8N_WEBHOOK_URL:-}
+    volumes:
+      - socforge_data:/data
+    restart: unless-stopped
+volumes:
+  socforge_data:

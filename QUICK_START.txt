@@ -1,0 +1,28 @@
+SOCFORGE - RUNNABLE SOC AUTOMATION TOOL
+=======================================
+
+WINDOWS:
+  1) Extract SOCForge_v1.zip
+  2) Install Python 3.10+ (if needed); check "Add Python to PATH".
+  3) Double-click start_windows.bat
+  4) Open http://127.0.0.1:8080
+  5) Click "Load demo scenarios".
+
+LINUX/MAC:
+  1) Extract ZIP and open terminal in the SOCForge folder
+  2) Run: ./start_linux.sh
+  3) Open http://127.0.0.1:8080
+
+DOCKER (optional):
+  docker compose up --build
+  Open http://127.0.0.1:8080
+
+DEMO INCLUDES:
+  - 9 synthetic alerts -> 3 correlated incidents
+  - Risk scoring, severity filters, timeline, ATT&CK references
+  - Incident status, notes, analyst assignment, case report export
+  - Simulated containment approval (no real device changes)
+  - Wazuh-format intake and optional n8n notification support
+
+WARNING: LOCAL LAB ONLY. Do not expose publicly or import customer data.
+See README.md, docs/TEST_REPORT.md and docs/PROJECT_PLAN.md.

@@ -1,0 +1,11 @@
+[
+  {"id":"demo-w-1001","source":"demo","host":"SALES-WIN11","rule_id":"4688","level":11,"category":"suspicious_execution","title":"Suspicious PowerShell encoded command launched","user":"sales.user","source_ip":"10.10.20.45"},
+  {"id":"demo-w-1002","source":"demo","host":"SALES-WIN11","rule_id":"4720","level":10,"category":"account_created","title":"New local user account created after suspicious execution","user":"svc-support"},
+  {"id":"demo-w-1003","source":"demo","host":"SALES-WIN11","rule_id":"4732","level":14,"category":"privilege_change","title":"New account added to local Administrators group","user":"svc-support"},
+  {"id":"demo-w-1004","source":"demo","host":"SALES-WIN11","rule_id":"1116","level":9,"category":"malware_detection","title":"Endpoint security flagged suspicious file activity (synthetic lab)"},
+  {"id":"demo-l-2001","source":"demo","host":"WEB-LNX-01","rule_id":"5710","level":6,"category":"authentication_failure","title":"sshd: failed password attempt","user":"root","source_ip":"198.51.100.23"},
+  {"id":"demo-l-2002","source":"demo","host":"WEB-LNX-01","rule_id":"5710","level":7,"category":"authentication_failure","title":"sshd: repeated failed password attempt","user":"admin","source_ip":"198.51.100.23"},
+  {"id":"demo-l-2003","source":"demo","host":"WEB-LNX-01","rule_id":"5712","level":9,"category":"authentication_failure","title":"sshd: multiple authentication failures detected","user":"admin","source_ip":"198.51.100.23"},
+  {"id":"demo-app-3001","source":"demo","host":"LAB-WEBAPP","rule_id":"web-403","level":6,"category":"web_attack","title":"Repeated unauthorised object access responses","user":"test-account","source_ip":"192.0.2.55"},
+  {"id":"demo-app-3002","source":"demo","host":"LAB-WEBAPP","rule_id":"web-idor","level":10,"category":"web_attack","title":"Potential IDOR access pattern in test application","user":"test-account","source_ip":"192.0.2.55"}
+]

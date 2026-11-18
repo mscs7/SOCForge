@@ -1,0 +1,50 @@
+{
+  "name": "SOCForge - Inbound Incident Notifications (safe lab)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "socforge-notifications",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "socforge-webhook",
+      "name": "Receive SOCForge Incident",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [320, 300],
+      "webhookId": "socforge-notifications"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return $input.all().map(item => { const e = item.json.body || item.json; const id = String(e.incident_id || 'unknown'); const sev = String(e.severity || 'unknown').toUpperCase(); const title = String(e.title || 'Security incident'); return {json: {received: true, case: `INC-${id.padStart(4, '0')}`, severity: sev, message: `[SOCForge ${sev}] ${title} (INC-${id.padStart(4, '0')})`, mode: 'lab', action: 'triage_required', no_real_containment: true}}; });"
+      },
+      "id": "socforge-format",
+      "name": "Format Analyst Notification",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [560, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {"responseCode": 200}
+      },
+      "id": "socforge-reply",
+      "name": "Acknowledge Notification",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [800, 300]
+    }
+  ],
+  "connections": {
+    "Receive SOCForge Incident": {"main": [[{"node":"Format Analyst Notification", "type":"main", "index":0}]]},
+    "Format Analyst Notification": {"main": [[{"node":"Acknowledge Notification", "type":"main", "index":0}]]}
+  },
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "pinData": {},
+  "tags": []
+}

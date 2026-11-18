@@ -1,0 +1,13 @@
+{
+  "id": "1763300000.12345",
+  "timestamp": "2026-11-17T10:00:00.000+0000",
+  "rule": {
+    "id": "5710",
+    "level": 8,
+    "description": "sshd: authentication failed.",
+    "groups": ["syslog", "sshd", "authentication_failed"]
+  },
+  "agent": {"id": "001", "name": "DEMO-LINUX"},
+  "data": {"srcip": "192.0.2.34", "dstuser": "root"},
+  "full_log": "Synthetic example only - not a real log"
+}
